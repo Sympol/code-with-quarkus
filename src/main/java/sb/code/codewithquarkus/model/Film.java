@@ -4,28 +4,18 @@ import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.time.Year;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "film", schema = "sakila")
 public class Film {
 
     @Id
-    @Column(nullable = false, updatable = false)
-    @SequenceGenerator(
-            name = "primary_sequence",
-            sequenceName = "primary_sequence",
-            allocationSize = 1,
-            initialValue = 10000
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "primary_sequence"
-    )
-    private Integer filmId;
+    @Column(name = "film_id", nullable = false, updatable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private short filmId;
 
     @Column(nullable = false)
     @Basic
@@ -35,23 +25,31 @@ public class Film {
     @Basic
     private String description;
 
-    @Column
+    @Column(name = "release_year", columnDefinition = "year(4")
     @Basic
-    private Integer releaseYear;
+    private Year releaseYear;
 
-    @Column(nullable = false)
+    @Column(name = "language_id")
     @Basic
-    private Integer rentalDuration;
+    private short languageId;
 
-    @Column(nullable = false, precision = 6, scale = 2)
+    @Column(name = "original_language_id")
+    @Basic
+    private short originalLanguageId;
+
+    @Column(name = "rental_duration",nullable = false)
+    @Basic
+    private short rentalDuration;
+
+    @Column(name = "rental_rate",nullable = false, precision = 6, scale = 2)
     @Basic
     private BigDecimal rentalRate;
 
     @Column
     @Basic
-    private Integer length;
+    private short length;
 
-    @Column(nullable = false, precision = 7, scale = 2)
+    @Column(name = "replacement_cost", nullable = false, precision = 7, scale = 2)
     @Basic
     private BigDecimal replacementCost;
 
@@ -59,27 +57,27 @@ public class Film {
     @Basic
     private String rating;
 
-    @Column(columnDefinition = "enum('Trailers','Commentaires','Deleted Scenes', 'Behind the Scenes')")
+    @Column(name = "special_features", columnDefinition = "set('Trailers','Commentaires','Deleted Scenes', 'Behind the Scenes')")
     @Basic
     private String specialFeatures;
 
-    @Column(nullable = false)
+    @Column(name = "last_update", nullable = false)
     @Basic
     private OffsetDateTime lastUpdate;
 
     @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     @JoinTable(
-            name = "actor_film",
+            name = "film_actor",
             joinColumns = {@JoinColumn(name = "film_id")},
             inverseJoinColumns = {@JoinColumn(name = "actor_id")}
     )
     private List<Actor> actors = new ArrayList<>();
 
-    public Integer getFilmId() {
+    public short getFilmId() {
         return filmId;
     }
 
-    public void setFilmId(final Integer filmId) {
+    public void setFilmId(final short filmId) {
         this.filmId = filmId;
     }
 
@@ -99,19 +97,35 @@ public class Film {
         this.description = description;
     }
 
-    public Integer getReleaseYear() {
+    public Year getReleaseYear() {
         return releaseYear;
     }
 
-    public void setReleaseYear(final Integer releaseYear) {
+    public void setReleaseYear(Year releaseYear) {
         this.releaseYear = releaseYear;
     }
 
-    public Integer getRentalDuration() {
+    public short getRentalDuration() {
         return rentalDuration;
     }
 
-    public void setRentalDuration(final Integer rentalDuration) {
+    public short getLanguageId() {
+        return languageId;
+    }
+
+    public void setLanguageId(short languageId) {
+        this.languageId = languageId;
+    }
+
+    public short getOriginalLanguageId() {
+        return originalLanguageId;
+    }
+
+    public void setOriginalLanguageId(short originalLanguageId) {
+        this.originalLanguageId = originalLanguageId;
+    }
+
+    public void setRentalDuration(short rentalDuration) {
         this.rentalDuration = rentalDuration;
     }
 
@@ -123,11 +137,11 @@ public class Film {
         this.rentalRate = rentalRate;
     }
 
-    public Integer getLength() {
+    public short getLength() {
         return length;
     }
 
-    public void setLength(final Integer length) {
+    public void setLength(final short length) {
         this.length = length;
     }
 

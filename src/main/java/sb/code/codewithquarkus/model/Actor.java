@@ -11,39 +11,30 @@ import java.util.Set;
 public class Actor {
 
     @Id
-    @Column(nullable = false, updatable = false)
-    @SequenceGenerator(
-            name = "primary_sequence",
-            sequenceName = "primary_sequence",
-            allocationSize = 1,
-            initialValue = 10000
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "primary_sequence"
-    )
-    private Integer actorId;
+    @Column(name = "actor_id",nullable = false, updatable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private short actorId;
 
-    @Column(nullable = false, length = 45)
+    @Column(name = "first_name",nullable = false, length = 45)
     @Basic
     private String firstName;
 
-    @Column(nullable = false, length = 45)
+    @Column(name = "last_name",nullable = false, length = 45)
     @Basic
     private String lastName;
 
-    @Column(nullable = false)
+    @Column(name = "last_update",nullable = false)
     @Basic
     private OffsetDateTime lastUpdate;
 
     @ManyToMany(mappedBy = "actors")
     private Set<Film> films = new HashSet<>();
 
-    public Integer getActorId() {
+    public short getActorId() {
         return actorId;
     }
 
-    public void setActorId(final Integer actorId) {
+    public void setActorId(final short actorId) {
         this.actorId = actorId;
     }
 
