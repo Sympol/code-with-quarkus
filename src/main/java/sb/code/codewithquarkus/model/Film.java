@@ -2,6 +2,7 @@ package sb.code.codewithquarkus.model;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.time.Year;
@@ -10,7 +11,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "film", schema = "sakila")
-public class Film {
+public class Film implements Serializable {
 
     @Id
     @Column(name = "film_id", nullable = false, updatable = false)
@@ -32,10 +33,6 @@ public class Film {
     @Column(name = "language_id")
     @Basic
     private short languageId;
-
-    @Column(name = "original_language_id")
-    @Basic
-    private short originalLanguageId;
 
     @Column(name = "rental_duration",nullable = false)
     @Basic
@@ -115,14 +112,6 @@ public class Film {
 
     public void setLanguageId(short languageId) {
         this.languageId = languageId;
-    }
-
-    public short getOriginalLanguageId() {
-        return originalLanguageId;
-    }
-
-    public void setOriginalLanguageId(short originalLanguageId) {
-        this.originalLanguageId = originalLanguageId;
     }
 
     public void setRentalDuration(short rentalDuration) {

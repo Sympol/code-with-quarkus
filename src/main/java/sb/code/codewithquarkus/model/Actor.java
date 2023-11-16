@@ -1,14 +1,16 @@
 package sb.code.codewithquarkus.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.time.OffsetDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "actor", schema = "sakila")
-public class Actor {
+public class Actor implements Serializable {
 
     @Id
     @Column(name = "actor_id",nullable = false, updatable = false)
@@ -28,6 +30,7 @@ public class Actor {
     private OffsetDateTime lastUpdate;
 
     @ManyToMany(mappedBy = "actors")
+    @JsonBackReference
     private Set<Film> films = new HashSet<>();
 
     public short getActorId() {
